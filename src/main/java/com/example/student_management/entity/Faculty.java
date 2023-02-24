@@ -14,10 +14,9 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     private String name;
-    @ManyToOne //MANY faculty TO ONE university
+
+    @ManyToOne //MANY  TO ONE university
     private University university;
 
 
