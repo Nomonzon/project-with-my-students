@@ -16,12 +16,15 @@ public class Student {
     private Integer id;
     private String lastName;
     private String firstName;
+    private String fathersName;
     private int age;
     private String birthdate;
     private String passportNumber;
 
+
     @ManyToOne // MANY students To ONE Address
     private Address address;
+
 
 
     @ManyToOne
