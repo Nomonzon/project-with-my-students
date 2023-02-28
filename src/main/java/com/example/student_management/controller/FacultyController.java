@@ -25,25 +25,25 @@ public class FacultyController {
     public String add(@RequestBody Faculty faculty) {
         facultyRepo.save(faculty);
         return "success";
-    }
+    }}
 
 
-    @DeleteMapping("faculty/{id}")
-    public String delete(@PathVariable Long id) {
-        facultyRepo.deleteById(id);
-        return "success";
-    }
-
-    @PutMapping("editt/{id}")
-    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
-        Optional<Faculty> byId = facultyRepo.findById(id);
-        if (byId.isPresent()) {
-            Faculty editedFaculty = byId.get();
-            editedFaculty.setId(faculty.getId());
-            editedFaculty.setName(faculty.getName());
-            editedFaculty.setUniversity(faculty.getUniversity());
-            facultyRepo.save(editedFaculty);
-            return "success";
-        } else return "faculty by this id is not found";
-    }
-}
+//    @DeleteMapping("faculty/{id}")
+//    public String delete(@PathVariable Long id) {
+//        facultyRepo.deleteById(id);
+//        return "success";
+//    }
+//
+//    @PutMapping("editt/{id}")
+//    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
+//        Optional<Faculty> byId = facultyRepo.findById(id);
+//        if (byId.isPresent()) {
+//            Faculty editedFaculty = byId.get();
+//            editedFaculty.setId(faculty.getId());
+//            editedFaculty.setName(faculty.getName());
+//            editedFaculty.setUniversity(faculty.getUniversity());
+//            facultyRepo.save(editedFaculty);
+//            return "success";
+//        } else return "faculty by this id is not found";
+//    }
+//}
