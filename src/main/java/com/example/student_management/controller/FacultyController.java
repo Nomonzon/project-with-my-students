@@ -41,6 +41,7 @@ public class FacultyController {
             Faculty editedFaculty = byId.get();
             editedFaculty.setId(faculty.getId());
             editedFaculty.setName(faculty.getName());
+            editedFaculty.setUniversity(faculty.getUniversity());
             facultyRepo.save(editedFaculty);
             return "success";
         } else return "faculty by this id is not found";
