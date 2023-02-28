@@ -1,9 +1,7 @@
 package com.example.student_management.controller;
 
 import com.example.student_management.entity.Address;
-import com.example.student_management.entity.Faculty;
 import com.example.student_management.repository.AddressRepo;
-import com.example.student_management.repository.FacultyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,26 +28,26 @@ public class AddressController {
     }
 
 
-    @DeleteMapping("address/{id}")
-    public String delete(@PathVariable Long id) {
-        addressRepo.deleteById(id);
-        return "success";
-    }
-
-    @PutMapping("editt/{id}")
-    public String update(@RequestBody Address address, @PathVariable Long id) {
-        Optional<Address> byId = addressRepo.findById(id);
-        if (byId.isPresent()) {
-            Address editedAddress = byId.get();
-            editedAddress.setId(address.getId());
-            editedAddress.setCountry(address.getCountry());
-            editedAddress.setStreet(address.getStreet());
-            editedAddress.setHomeNumber(address.getHomeNumber());
-            editedAddress.setRegion(address.getRegion());
-            addressRepo.save(editedAddress);
-            return "success";
-        } else return "faculty by this id is not found";
-    }
+//    @DeleteMapping("address/{id}")
+//    public String delete(@PathVariable Long id) {
+//        addressRepo.deleteById(id);
+//        return "success";
+//    }
+//
+//    @PutMapping("editt/{id}")
+//    public String update(@RequestBody Address address, @PathVariable Long id) {
+//        Optional<Address> byId = addressRepo.findById(id);
+//        if (byId.isPresent()) {
+//            Address editedAddress = byId.get();
+//            editedAddress.setId(address.getId());
+//            editedAddress.setCountry(address.getCountry());
+//            editedAddress.setStreet(address.getStreet());
+//            editedAddress.setHomeNumber(address.getHomeNumber());
+//            editedAddress.setRegion(address.getRegion());
+//            addressRepo.save(editedAddress);
+//            return "success";
+//        } else return "faculty by this id is not found";
+//    }
 
 
 }

@@ -1,6 +1,11 @@
 package com.example.student_management.controller;
 
+import com.example.student_management.entity.Address;
 import com.example.student_management.entity.Faculty;
+import com.example.student_management.entity.University;
+import com.example.student_management.payload.FacultyDto;
+import com.example.student_management.payload.UniversityDto;
+import com.example.student_management.repository.AddressRepo;
 import com.example.student_management.repository.FacultyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +18,7 @@ public class FacultyController {
 
     @Autowired
     private FacultyRepo facultyRepo;
+    private AddressRepo addressRepo;
 
 
     @GetMapping("faculty")
@@ -22,28 +28,35 @@ public class FacultyController {
 
 
     @PostMapping("faculty")
-    public String add(@RequestBody Faculty faculty) {
-        facultyRepo.save(faculty);
+    public String add(@RequestBody FacultyDto facultyDto) {
+        Optional<Address> address = addressRepo.findById(facultyDto.getAddressId());
+        if (address.isPresent()) {
+            Address address1 = address.get();
+            Faculty faculty = new Faculty(null,"Umidjon",new University(null,"Tatu",address1));
+            facultyRepo.save(faculty);
+        } else {
+            return "address not found";
+        }
         return "success";
     }
 
 
-    @DeleteMapping("faculty/{id}")
-    public String delete(@PathVariable Long id) {
-        facultyRepo.deleteById(id);
-        return "success";
-    }
-
-    @PutMapping("editt/{id}")
-    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
-        Optional<Faculty> byId = facultyRepo.findById(id);
-        if (byId.isPresent()) {
-            Faculty editedFaculty = byId.get();
-            editedFaculty.setId(faculty.getId());
-            editedFaculty.setName(faculty.getName());
-            editedFaculty.setUniversity(faculty.getUniversity());
-            facultyRepo.save(editedFaculty);
-            return "success";
-        } else return "faculty by this id is not found";
-    }
+//    @DeleteMapping("faculty/{id}")
+//    public String delete(@PathVariable Long id) {
+//        facultyRepo.deleteById(id);
+//        return "success";
+//    }
+//
+//    @PutMapping("editt/{id}")
+//    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
+//        Optional<Faculty> byId = facultyRepo.findById(id);
+//        if (byId.isPresent()) {
+//            Faculty editedFaculty = byId.get();
+//            editedFaculty.setId(faculty.getId());
+//            editedFaculty.setName(faculty.getName());
+//            editedFaculty.setUniversity(faculty.getUniversity());
+//            facultyRepo.save(editedFaculty);
+//            return "success";
+//        } else return "faculty by this id is not found";
+//    }
 }
