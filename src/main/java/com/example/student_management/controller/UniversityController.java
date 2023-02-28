@@ -32,7 +32,7 @@ public class UniversityController {
         Optional<Address> address = addressRepo.findById(universityDto.getAddressId());
         if (address.isPresent()) {
             Address address1 = address.get();
-            University university = new University(null, "TATU", address1);
+            University university = new University(null, universityDto.getName(), address1);
             univerRepo.save(university);
         } else {
             return "address not found";

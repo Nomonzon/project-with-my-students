@@ -11,6 +11,6 @@ public class FacultyDto {
 
     private Long id;
     private String name;
-    private Long addressId;
+    private Long universityId;
 }
 

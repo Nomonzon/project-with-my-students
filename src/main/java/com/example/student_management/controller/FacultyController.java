@@ -1,12 +1,10 @@
 package com.example.student_management.controller;
 
-import com.example.student_management.entity.Address;
 import com.example.student_management.entity.Faculty;
 import com.example.student_management.entity.University;
 import com.example.student_management.payload.FacultyDto;
-import com.example.student_management.payload.UniversityDto;
-import com.example.student_management.repository.AddressRepo;
 import com.example.student_management.repository.FacultyRepo;
+import com.example.student_management.repository.UniverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +16,9 @@ public class FacultyController {
 
     @Autowired
     private FacultyRepo facultyRepo;
-    private AddressRepo addressRepo;
+
+    @Autowired
+    private UniverRepo univerRepo;
 
 
     @GetMapping("faculty")
@@ -29,10 +29,10 @@ public class FacultyController {
 
     @PostMapping("faculty")
     public String add(@RequestBody FacultyDto facultyDto) {
-        Optional<Address> address = addressRepo.findById(facultyDto.getAddressId());
+        Optional<University> address = univerRepo.findById(facultyDto.getUniversityId());
         if (address.isPresent()) {
-            Address address1 = address.get();
-            Faculty faculty = new Faculty(null,"Umidjon",new University(null,"Tatu",address1));
+            University university1 = address.get();
+            Faculty faculty = new Faculty(null,"umid", university1);
             facultyRepo.save(faculty);
         } else {
             return "address not found";
