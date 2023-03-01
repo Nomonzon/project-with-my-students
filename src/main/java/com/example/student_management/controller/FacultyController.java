@@ -32,7 +32,7 @@ public class FacultyController {
         Optional<University> address = univerRepo.findById(facultyDto.getUniversityId());
         if (address.isPresent()) {
             University university1 = address.get();
-            Faculty faculty = new Faculty(null,"umid", university1);
+            Faculty faculty = new Faculty(null, facultyDto.getName(), university1);
             facultyRepo.save(faculty);
         } else {
             return "address not found";
@@ -41,12 +41,12 @@ public class FacultyController {
     }
 
 
-//    @DeleteMapping("faculty/{id}")
-//    public String delete(@PathVariable Long id) {
-//        facultyRepo.deleteById(id);
-//        return "success";
-//    }
-//
+    @DeleteMapping("faculty/{id}")
+    public String delete(@PathVariable Long id) {
+        facultyRepo.deleteById(id);
+        return "success";
+    }
+
 //    @PutMapping("editt/{id}")
 //    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
 //        Optional<Faculty> byId = facultyRepo.findById(id);
