@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,4 +26,7 @@ public class Student {
     private Address address;
     @ManyToOne
     private Group group;
+    @OneToMany
+    private List<Subject> subject;
+
 }
