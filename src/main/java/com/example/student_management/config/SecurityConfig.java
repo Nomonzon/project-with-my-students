@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class UniversityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -30,11 +30,11 @@ public class UniversityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("director").password(passwordEncoder().encode("123")).roles("DIRECTOR").authorities("WRITE","READ","DELETE","EDIT","READ_BY_ID")
+                .withUser("director").password(passwordEncoder().encode("1234direct")).roles("DIRECTOR").authorities("WRITE_FACULTY","READ","DELETE","EDIT")
                 .and()
-                .withUser("teacher").password(passwordEncoder().encode("321")).roles("TEACHER").authorities("READ","WRITE","READ_BY_ID")
+                .withUser("teacher").password(passwordEncoder().encode("1234teach")).roles("TEACHER").authorities("READ","WRITE")
                 .and()
-                .withUser("people").password(passwordEncoder().encode("456")).roles("PEOPLE").authorities("READ_BY_ID");
+                .withUser("pupil").password(passwordEncoder().encode("1234pupil")).roles("PUPIL").authorities("READ");
     }
     @Bean
     PasswordEncoder passwordEncoder(){
