@@ -6,10 +6,15 @@ import com.example.student_management.payload.FacultyDto;
 import com.example.student_management.repository.FacultyRepo;
 import com.example.student_management.repository.UniverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+@RequestMapping("api/faculty")
 @RestController
 public class FacultyController {
 
@@ -20,14 +25,14 @@ public class FacultyController {
     @Autowired
     private UniverRepo univerRepo;
 
-
-    @GetMapping("faculty")
+    @PreAuthorize(value = "hasAuthority('READ')")
+    @GetMapping
     public List<Faculty> getAll() {
         return facultyRepo.findAll();
     }
 
-
-    @PostMapping("faculty")
+    @PreAuthorize(value = "hasRole('DIRECTOR')")
+    @PostMapping
     public String add(@RequestBody FacultyDto facultyDto) {
         Optional<University> address = univerRepo.findById(facultyDto.getUniversityId());
         if (address.isPresent()) {
@@ -40,23 +45,31 @@ public class FacultyController {
         return "success";
     }
 
-
-    @DeleteMapping("faculty/{id}")
-    public String delete(@PathVariable Long id) {
+    @PreAuthorize(value = "hasRole('DIRECTOR')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         facultyRepo.deleteById(id);
-        return "success";
+        return ResponseEntity.ok().build();
     }
 
-//    @PutMapping("editt/{id}")
-//    public String update(@RequestBody Faculty faculty, @PathVariable Long id) {
-//        Optional<Faculty> byId = facultyRepo.findById(id);
-//        if (byId.isPresent()) {
-//            Faculty editedFaculty = byId.get();
-//            editedFaculty.setId(faculty.getId());
-//            editedFaculty.setName(faculty.getName());
-//            editedFaculty.setUniversity(faculty.getUniversity());
-//            facultyRepo.save(editedFaculty);
-//            return "success";
-//        } else return "faculty by this id is not found";
-//    }
-}
+    @PreAuthorize(value = "hasRole('DIRECTOR')")
+    @PutMapping("/{id}")
+    public ResponseEntity<Faculty> update(@RequestBody Faculty faculty, @PathVariable Long id) {
+        Optional<Faculty> byId = facultyRepo.findById(id);
+        if (byId.isPresent()) {
+            Faculty editedFaculty = byId.get();
+            editedFaculty.setId(faculty.getId());
+            editedFaculty.setName(faculty.getName());
+            editedFaculty.setUniversity(faculty.getUniversity());
+            facultyRepo.save(editedFaculty);
+            return ResponseEntity.ok(facultyRepo.save(editedFaculty));
+        }return ResponseEntity.notFound().build();
+    }
+
+    @PreAuthorize(value = "hasAuthority('READ_BY_ID')")
+    @GetMapping("/{id}")
+    public HttpEntity<?> getProduct(@PathVariable Long id) {
+        Optional<Faculty> facultyOptional = facultyRepo.findById(id);
+        return ResponseEntity.status(facultyOptional.isPresent() ? 200 : 404).body(facultyOptional.orElse(null));
+
+}}

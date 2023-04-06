@@ -7,11 +7,12 @@ import com.example.student_management.payload.UniversityDto;
 import com.example.student_management.repository.AddressRepo;
 import com.example.student_management.repository.UniverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@RequestMapping("university")
 @RestController
 public class UniversityController {
 
@@ -21,13 +22,15 @@ public class UniversityController {
     @Autowired
     private AddressRepo addressRepo;
 
-    @GetMapping("university")
+
+    @PreAuthorize(value = "hasAuthority('READ')")
+    @GetMapping
     public List<University> getAll() {
         return univerRepo.findAll();
     }
 
-
-    @PostMapping("university")
+    @PreAuthorize(value = "hasRole('DIRECTOR')")
+    @PostMapping
     public String add(@RequestBody UniversityDto universityDto) {
         Optional<Address> address = addressRepo.findById(universityDto.getAddressId());
         if (address.isPresent()) {
@@ -41,7 +44,7 @@ public class UniversityController {
     }
 
 
-    @DeleteMapping("university/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         univerRepo.deleteById(id);
         return "success";
